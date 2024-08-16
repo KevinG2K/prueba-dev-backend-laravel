@@ -34,6 +34,8 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $datosValidados = $this->validateRequest($request);
+        $imagenPath = $this->saveImagen($request);
+        $datosValidados['imagen'] = $imagenPath;
         Producto::create($datosValidados);
         return redirect()->route('productos.index');
     }
@@ -63,6 +65,8 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
         $datosValidados = $this->validateRequest($request);
+        $imagenPath = $this->saveImagen($request, $producto->imagen);
+        $datosValidados['imagen'] = $imagenPath;
         $producto->update($datosValidados);
         return redirect()->route('productos.index');
     }
@@ -92,7 +96,30 @@ class ProductoController extends Controller
             'precio' => "required|numeric|max:999999.99",
             'cantidad' => "required|integer",
             'categoria_id' => "nullable|integer",
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
         return $datosValidados;
+    }
+
+    /**
+     * Guarda la imagen en el directorio 'productos' dentro de la carpeta públic
+     *
+     * @param Request $request La solicitud que contiene el archivo de imagen.
+     * @param string|null $imagenPath Ruta donde se guardaría la imagen. Si no se proporciona,
+     *                                se crea la nueva ruta, caso contrario se sobrescribe.
+     * @return string La ruta del archivo guardado.
+     */
+    private function saveImagen(Request $request, string $imagenPath = null)
+    {
+        if ($request->hasFile('imagen')) {
+            $uuid = random_int(1, 100);
+            $file = $request->file('imagen');
+            $nombreArchivo = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $nuevoNombre = $nombreArchivo . '_' . $uuid . '.' . $extension;
+            $imagenPath = $file->storeAs('productos', $nuevoNombre, 'public');
+        }
+
+        return $imagenPath;
     }
 }

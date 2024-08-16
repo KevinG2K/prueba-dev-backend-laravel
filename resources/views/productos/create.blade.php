@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <h1 class="mb-4">{{ $title }}</h1>
         <div class="col-6">
-            <form action="{{ route('productos.store') }}" method="POST">
+            <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre:</label>
@@ -31,6 +31,10 @@
                             <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen</label>
+                    <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
                 </div>
                 <button type="submit" class="btn btn-primary">Crear</button>
                 <a href="{{ route('productos.index') }}" class="btn btn-secondary">Cancelar</a>

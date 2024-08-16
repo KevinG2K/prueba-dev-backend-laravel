@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <h1 class="mb-4">{{ $title }}</h1>
         <div class="col-6">
-            <form action="{{ route('productos.update', $producto->id) }}" method="POST">
+            <form action="{{ route('productos.update', $producto->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -36,6 +36,10 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen</label>
+                    <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
                 </div>
                 <button type="submit" class="btn btn-primary">Actualizar</button>
                 <a href="{{ route('productos.index') }}" class="btn btn-secondary">Cancelar</a>

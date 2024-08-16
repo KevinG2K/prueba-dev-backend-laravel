@@ -10,6 +10,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
@@ -22,6 +23,11 @@
                 @foreach ($productos as $producto)
                     <tr>
                         <td>{{ $producto->id }}</td>
+                        <td>
+                            @if($producto->imagen)
+                                <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" width="40">
+                            @endif
+                        </td>
                         <td>{{ $producto->nombre }}</td>
                         <td>{{ $producto->descripcion }}</td>
                         <td>{{ $producto->precio }}</td>
