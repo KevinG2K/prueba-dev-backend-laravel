@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
         $title = "Listado de Productos";
-        return view('productos.index', compact('productos', 'title'));
+        $productos = Producto::with('categoria')->get();
+        return view('productos.index', compact('title', 'productos'));
     }
 
     /**
@@ -23,7 +24,8 @@ class ProductoController extends Controller
     public function create()
     {
         $title = "Crear Producto";
-        return view('productos.create', compact('title'));
+        $categorias = Categoria::all();
+        return view('productos.create', compact('title', 'categorias'));
     }
 
     /**
@@ -42,7 +44,7 @@ class ProductoController extends Controller
     public function show(Producto $producto)
     {
         $title = "Ver Producto";
-        return view('productos.show', compact('producto', 'title'));
+        return view('productos.show', compact('title', 'producto'));
     }
 
     /**
@@ -51,7 +53,8 @@ class ProductoController extends Controller
     public function edit(Producto $producto)
     {
         $title = "Editar Producto";
-        return view('productos.edit', compact('producto', 'title'));
+        $categorias = Categoria::all();
+        return view('productos.edit', compact('title', 'producto', 'categorias'));
     }
 
     /**
@@ -80,7 +83,6 @@ class ProductoController extends Controller
     {
         // Expresión regular para permitir solo letras y espacios
         $regexNombre = 'regex:/^[a-zA-Z\s]+$/';
-
         // Expresión regular para permitir letras, números, espacios, guiones, puntos y comas
         $regexDescripcion = 'regex:/^[a-zA-Z0-9\s\-\.,]+$/';
 
@@ -89,8 +91,8 @@ class ProductoController extends Controller
             'descripcion' => "required|string|$regexDescripcion",
             'precio' => "required|numeric|max:999999.99",
             'cantidad' => "required|integer",
+            'categoria_id' => "nullable|integer",
         ]);
-
         return $datosValidados;
     }
 }

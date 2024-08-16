@@ -13,6 +13,15 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'precio',
-        'cantidad'
+        'cantidad',
+        'categoria_id'
     ];
+
+    /**
+     * Esta relación establece que un producto puede pertenecer a una sola categoría.
+     */
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
 }

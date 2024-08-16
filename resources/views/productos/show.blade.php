@@ -11,6 +11,7 @@
                 <p><strong>Descripción:</strong> {{ $producto->descripcion }}</p>
                 <p><strong>Precio:</strong> {{ $producto->precio }}</p>
                 <p><strong>Cantidad:</strong> {{ $producto->cantidad }}</p>
+                <p><strong>Categoría:</strong> {{ $producto->categoria->nombre ?? 'S/C' }}</p>
                 <a href="{{ route('productos.index') }}" class="btn btn-primary mt-3">Volver atrás</a>
             </div>
         </div>
