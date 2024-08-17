@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('loginForm');
 });
 
-Route::resource('productos', ProductoController::class);
+Route::get('/inicio-sesion', [AuthController::class, 'loginForm'])->name('loginForm');
+Route::post('/autenticar', [AuthController::class, 'login'])->name('login');
+Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/registro', [AuthController::class, 'registerForm'])->name('registerForm');
+Route::post('/registrar', [AuthController::class, 'register'])->name('register');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('productos', ProductoController::class);
+});
