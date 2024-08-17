@@ -19,11 +19,11 @@ Route::get('/', function () {
     return redirect()->route('loginForm');
 });
 
-Route::get('/inicio-sesion', [AuthController::class, 'loginForm'])->name('loginForm');
+Route::get('/inicio-sesion', [AuthController::class, 'loginForm'])->middleware('guest')->name('loginForm');
 Route::post('/autenticar', [AuthController::class, 'login'])->name('login');
 Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/registro', [AuthController::class, 'registerForm'])->name('registerForm');
+Route::get('/registro', [AuthController::class, 'registerForm'])->middleware('guest')->name('registerForm');
 Route::post('/registrar', [AuthController::class, 'register'])->name('register');
 
 Route::middleware(['auth'])->group(function () {
